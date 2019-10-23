@@ -18,7 +18,7 @@ import org.springframework.transaction.annotation.Transactional;
 import org.springframework.util.ResourceUtils;
 
 @Component
-public class AsynchronousService {
+public class AsynchronousService{
 	
 	@Autowired 
 	private JmsTemplate jmsTemplate;
@@ -29,8 +29,8 @@ public class AsynchronousService {
     @Autowired
     private ApplicationContext applicationContext;
     
+    
     @Async
-    @Transactional
     public void sendMQ(int count) throws IOException {
     	
     	File file = ResourceUtils.getFile("config/input.txt");
@@ -60,8 +60,7 @@ public class AsynchronousService {
 
         MyThread myThread = applicationContext.getBean(MyThread.class);
         taskExecutor.execute(myThread);
-        
-        
+              
     }
 
 }

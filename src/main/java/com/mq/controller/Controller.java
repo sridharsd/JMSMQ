@@ -21,11 +21,11 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
+import com.mq.bean.JmsBean;
 import com.mq.service.AsynchronousService;
  
 @RestController
 @RequestMapping("/jms") 
-@ComponentScan(basePackages = "com.mq")
 public class Controller {
 	/*
 	 * @Autowired private JmsTemplate jmsTemplate;
@@ -33,14 +33,18 @@ public class Controller {
 	
 	@Autowired
     private AsynchronousService anAsynchronousService;
+	
+	@Autowired
+    private JmsBean jmsBean;
 
     private static final Logger LOGGER = LoggerFactory.getLogger(Controller.class);
 
 
-    @RequestMapping("/runTask")
-    public String executeAsync() {
-
+    @RequestMapping("/runTask/{count}")
+    public String executeAsync(@PathVariable("count") int count) throws IOException {
+    	jmsBean.setCount(count);
         anAsynchronousService.executeAsynchronously();
+        //anAsynchronousService.sendMQ(count);
 
         return "OK";
     }
